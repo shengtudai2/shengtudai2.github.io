@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Jupyte安装不完全指北 | shengtudai2</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://shengtudai2.github.io/favicon.ico?v=1659664297415">
+<link rel="stylesheet" href="https://shengtudai2.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="1.创建虚拟环境，安装jupyter
+conda create -n graph python=3.8  # 创建虚拟环境
+conda activate graph
+python -m pip install --upgrade pip
+c..." />
+    <meta name="keywords" content="安装指北,jupyter" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://shengtudai2.github.io">
+        <img src="https://shengtudai2.github.io/images/avatar.png?v=1659664297415" class="site-logo">
+        <h1 class="site-title">shengtudai2</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      HOME PAGE
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://shengtudai2.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Jupyte安装不完全指北</h2>
+            <div class="post-date">2022-08-02</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="1创建虚拟环境安装jupyter">1.创建虚拟环境，安装jupyter</h3>
+<pre><code class="language-bash">conda create -n graph python=3.8  # 创建虚拟环境
+conda activate graph
+python -m pip install --upgrade pip
+conda install ipython  # 安装ipython
+conda install jupyter  # 安装jupyter
+jupyter notebook --generate-config  # 生成配置文件
+</code></pre>
+<h3 id="2输入ipython配置密码">2.输入<code>ipython</code>配置密码</h3>
+<pre><code class="language-python">from notebook.auth import passwd
+passwd()
+# 输入两次密码
+# 输出内容保存好
+# Out[2]: 'argon2:$argon2id$v=19$m=10240,t=10,p=8$EHhduPvNwGdI0dHo5dgQDg$0rEs3/blaFD5xv/bb+NhU1'
+exit
+</code></pre>
+<h3 id="3修改配置文件">3.修改配置文件</h3>
+<pre><code class="language-bash">vim /home/hgdai/.jupyter/jupyter_notebook_config.py
+</code></pre>
+<p>编辑以下内容：</p>
+<pre><code class="language-shell">c.NotebookApp.ip='*' #设置访问notebook的ip，*表示所有IP，这里设置ip为都可访问
+c.NotebookApp.password=u'argon2:$argon2id$v=19$m=10240,t=10,p=8$EHhduPvNwGdI0dHo5dgQDg$0rEs3/blaFD5xv/bb+NhU1'#填写刚刚生成的密文
+c.NotebookApp.open_browser = False # 禁止notebook启动时自动打开浏览器
+c.NotebookApp.port =8888 #指定访问的端口，默认是8888
+</code></pre>
+<p>启动jupyter</p>
+<p><code>nohup jupyter notebook --allow-root &gt; jupyter.log 2&gt;&amp;1 &amp;</code></p>
+<h3 id="4增加删除jupyter内核">4.增加/删除jupyter内核</h3>
+<pre><code class="language-shell"># 以下步骤在需要添加的python环境下操作
+pip install ipykernel
+python -m ipykernel install --user --name='graph-python38' --display-name='graph-python38'
+# --name 设置环境名，随便起名，在 jupyter kernelspec list 命令查看所有环境时显示该名
+# --display-name 设置内核展示的名字，在jupyter网页上选择内核时显示的名字
+# jupyter kernelspec remove [name] 删除某个内核
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://shengtudai2.github.io/tag/NVJZsPGxA/" class="tag">
+                    安装指北
+                  </a>
+                
+                  <a href="https://shengtudai2.github.io/tag/uvWIi4tUa9/" class="tag">
+                    jupyter
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://shengtudai2.github.io/post/networksx/">
+                  <h3 class="post-title">
+                    networkx创建图并添加特征
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

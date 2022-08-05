@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>networkx创建图并添加特征 | shengtudai2</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://shengtudai2.github.io/favicon.ico?v=1659664297415">
+<link rel="stylesheet" href="https://shengtudai2.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="networkx创建图并添加特征
+
+基因调控网络图，985个节点，2024条边，每个节点暂时包括两类特征：
+
+染色质开放性特征RP985×4
+基因序列特征SeqFeat985×120
+
+import networkx as nx
+impor..." />
+    <meta name="keywords" content="networkx,GRN" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://shengtudai2.github.io">
+        <img src="https://shengtudai2.github.io/images/avatar.png?v=1659664297415" class="site-logo">
+        <h1 class="site-title">shengtudai2</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      HOME PAGE
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://shengtudai2.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">networkx创建图并添加特征</h2>
+            <div class="post-date">2022-08-01</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="networkx创建图并添加特征">networkx创建图并添加特征</h1>
+<hr>
+<p>基因调控网络图，985个节点，2024条边，每个节点暂时包括两类特征：</p>
+<ol>
+<li>染色质开放性特征RP<sub>985×4</sub></li>
+<li>基因序列特征SeqFeat<sub>985×120</sub></li>
+</ol>
+<pre><code class="language-python">import networkx as nx
+import matplotlib.pyplot as plt
+import pandas as pd
+DG = nx.DiGraph()
+# net.csv edges文件，包括所有TF和TG的边信息和节点名称
+with open(&quot;../data/net.csv&quot;, &quot;r&quot;) as net:
+    nw = net.readlines()[1:]
+edges = []
+for t in nw:
+    t = t.replace('&quot;','').strip().split(',')
+    edges.append((t[1], t[2]))
+DG.add_edges_from(edges)
+</code></pre>
+<h2 id="添加节点特征-基因序列特征">添加节点特征--基因序列特征</h2>
+<pre><code class="language-python">tf = pd.read_csv(&quot;tf_seqFeat.csv&quot;,header=0, index_col=0)
+tg = pd.read_csv(&quot;tg_seqFeat.csv&quot;, header=0, index_col=0)
+
+for i in range(tf.shape[0]):
+    DG.add_node(tf.index[i], seqFeats=list(tf.iloc[i,:]))
+for j in range(tg.shape[0]):
+    DG.add_node(tg.index[j], seqFeats=list(tg.iloc[j,:]))
+</code></pre>
+<h2 id="添加节点特征-基因染色质开放性特征">添加节点特征--基因染色质开放性特征</h2>
+<pre><code class="language-python">rp = pd.read_csv(&quot;GeneRPFeatures.csv&quot;, header=0, index_col='gene_id')
+rp = rp.iloc[:,1:]
+for node in DG.nodes():
+    DG.add_node(node, RP=list(rp.loc[node,:]))
+</code></pre>
+<h2 id="添加节点特征-基因表达特征">添加节点特征--基因表达特征</h2>
+<pre><code class="language-python">expr = pd.read_csv(&quot;cpm_clean_expr_calMean.csv&quot;, index_col=0)
+expr = expr.iloc[:,-6:]
+for node in DG.nodes():
+    DG.add_node(node, expr=list(expr.loc[node,:]))
+</code></pre>
+<h2 id="图结构保存与加载">图结构保存与加载</h2>
+<p>NetworkX支持许多流行的格式，如边缘列表、邻接列表、GML、GraphML、PICLE、LEDA等<br>
+这里采用gml格式保存: <code>nx.write_gml(path.to.save)</code><br>
+图的加载与保存对应: <code>nx.read_gml(path.to.read)</code></p>
+<pre><code class="language-python">nx.write_gml(DG, &quot;GRN_networkx.gml&quot;)
+# g2 = nx.read_gml(&quot;GRN_networkx.gml&quot;)
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://shengtudai2.github.io/tag/CQtGcAeVX/" class="tag">
+                    networkx
+                  </a>
+                
+                  <a href="https://shengtudai2.github.io/tag/TdSY7qLDag/" class="tag">
+                    GRN
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://shengtudai2.github.io/post/yi-xie-you-qu-de-xiao-xiang-mu/">
+                  <h3 class="post-title">
+                    一些有趣的小项目
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

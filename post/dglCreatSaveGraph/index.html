@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>DGL创建保存图 | shengtudai2</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://shengtudai2.github.io/favicon.ico?v=1659664297415">
+<link rel="stylesheet" href="https://shengtudai2.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="DGL创建保存图
+节点特征
+
+染色质开放性特征
+基因序列特征
+基因表达量特征
+
+边特征
+
+1
+
+import torch
+import dgl
+import pandas as pd
+import numpy as np
+
+net = pd..." />
+    <meta name="keywords" content="DGL,GRN" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://shengtudai2.github.io">
+        <img src="https://shengtudai2.github.io/images/avatar.png?v=1659664297415" class="site-logo">
+        <h1 class="site-title">shengtudai2</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      HOME PAGE
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://shengtudai2.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">DGL创建保存图</h2>
+            <div class="post-date">2022-08-03</div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="dgl创建保存图">DGL创建保存图</h1>
+<h2 id="节点特征">节点特征</h2>
+<ul>
+<li>染色质开放性特征</li>
+<li>基因序列特征</li>
+<li>基因表达量特征</li>
+</ul>
+<h2 id="边特征">边特征</h2>
+<ul>
+<li>1</li>
+</ul>
+<pre><code class="language-python">import torch
+import dgl
+import pandas as pd
+import numpy as np
+</code></pre>
+<pre><code class="language-python">net = pd.read_csv(&quot;net.csv&quot;, index_col=0)
+new_net = pd.DataFrame(columns=[&quot;TF&quot;, &quot;TG&quot;])
+seq_feat_tf = pd.read_csv(&quot;tf_seqFeat.csv&quot;, index_col=0)
+seq_feat_tg = pd.read_csv(&quot;tg_seqFeat.csv&quot;, index_col=0)
+clean_gene = pd.concat([seq_feat_tf, seq_feat_tg]).index # 有效基因，删掉了非编码蛋白的基因，这类基因无法计算序列特征
+
+for i in range(net.shape[0]):
+    if (net.iloc[i,0] in clean_gene) &amp; (net.iloc[i, 1] in clean_gene):
+        new_net.loc[len(new_net.index)] = [net.iloc[i,0], net.iloc[i,1]]
+net = new_net  # 删掉非编码蛋白基因后的新调控网络
+net
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TF</th>
+      <th>TG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Os02g0797100</td>
+      <td>Os05g0515900</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Os02g0797100</td>
+      <td>Os11g0552100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Os02g0797100</td>
+      <td>Os12g0575000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Os02g0797100</td>
+      <td>Os06g0724500</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Os09g0309700</td>
+      <td>Os12g0575000</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1979</th>
+      <td>Os07g0640900</td>
+      <td>Os12g0588800</td>
+    </tr>
+    <tr>
+      <th>1980</th>
+      <td>Os01g0922600</td>
+      <td>Os12g0573600</td>
+    </tr>
+    <tr>
+      <th>1981</th>
+      <td>Os01g0922600</td>
+      <td>Os11g0498600</td>
+    </tr>
+    <tr>
+      <th>1982</th>
+      <td>Os03g0315400</td>
+      <td>Os06g0196600</td>
+    </tr>
+    <tr>
+      <th>1983</th>
+      <td>Os01g0246700</td>
+      <td>Os05g0370200</td>
+    </tr>
+  </tbody>
+</table>
+<p>1984 rows × 2 columns</p>
+</div>
+<h2 id="基因编号">基因编号</h2>
+<p>在DGL中节点无名称，将基因名与序号一一对应</p>
+<pre><code class="language-python">tf = net.loc[:,&quot;TF&quot;]
+tg = net.loc[:, &quot;TG&quot;]
+gdict = dict()
+c = 0
+for i in tf:
+    if i in gdict.keys():
+        pass
+    else:
+        gdict[i] = c
+        c += 1
+for i in tg:
+    if i in gdict.keys():
+        pass
+    else:
+        gdict[i] = c
+        c += 1
+print(&quot;总基因数：&quot;+ str(len(gdict)))
+print(&quot;TF数：&quot; + str(len(set(tf))))
+print(&quot;TG数：&quot; + str(len(set(tg))))
+</code></pre>
+<pre><code>总基因数：967
+TF数：56
+TG数：911
+</code></pre>
+<pre><code class="language-python">net_value = net.values
+for i in range(len(net_value)):
+    net_value[i][0] = gdict[net_value[i][0]]
+    net_value[i][1] = gdict[net_value[i][1]]
+net_value = net_value.T.astype(np.int32)
+net_value
+</code></pre>
+<pre><code>array([[  0,   0,   0, ...,  19,  25,   5],
+       [ 56,  57,  58, ..., 965, 862, 966]], dtype=int32)
+</code></pre>
+<h2 id="创建图">创建图</h2>
+<pre><code class="language-python">graph = dgl.graph(data=(net_value[0], net_value[1]))
+graph.edges()
+</code></pre>
+<pre><code>(tensor([ 0,  0,  0,  ..., 19, 25,  5]),
+ tensor([ 56,  57,  58,  ..., 965, 862, 966]))
+</code></pre>
+<h2 id="1添加节点特征-染色质开放性特征rp">1.添加节点特征--染色质开放性特征RP</h2>
+<pre><code class="language-python">RP = pd.read_csv(&quot;GeneRPFeatures.csv&quot;, index_col=1, header=0).iloc[:,1:5]
+rp = np.array([])
+for gene, id in gdict.items():
+    t = np.array(RP.loc[gene,:])
+    rp = np.append(rp, t)
+rpf = torch.tensor(rp.reshape(len(gdict), 4))
+graph.ndata[&quot;rp&quot;] = rpf
+graph.ndata[&quot;rp&quot;]
+</code></pre>
+<pre><code>tensor([[-0.0640, -0.0274, -0.0365, -0.1546],
+        [ 0.4507,  0.2506,  0.3135,  0.6155],
+        [ 2.1213,  1.7325,  0.9074,  1.9912],
+        ...,
+        [ 1.0883,  0.8400,  0.5759,  1.2669],
+        [ 2.3729,  1.6867,  1.5536,  2.0209],
+        [ 0.2055,  0.3148,  0.5361,  0.2766]], dtype=torch.float64)
+</code></pre>
+<h2 id="2添加节点特征-基因序列特征">2.添加节点特征--基因序列特征</h2>
+<pre><code class="language-python">seq_feat_tf = pd.read_csv(&quot;tf_seqFeat.csv&quot;, index_col=0)
+seq_feat_tg = pd.read_csv(&quot;tg_seqFeat.csv&quot;, index_col=0)
+seq_feat = pd.concat([seq_feat_tf, seq_feat_tg])
+
+sf = np.array([])
+for gene, id in gdict.items():
+    t = np.array(seq_feat.loc[gene,:])
+    sf = np.append(sf, t)
+sff = torch.tensor(sf.reshape(len(gdict), 120))
+graph.ndata[&quot;seqFeat&quot;] = sff
+graph.ndata[&quot;seqFeat&quot;]
+</code></pre>
+<pre><code>tensor([[0.1522, 0.1252, 0.3796,  ..., 0.0660, 0.0430, 0.0340],
+        [0.2863, 0.2341, 0.2173,  ..., 0.0620, 0.0560, 0.0530],
+        [0.1117, 0.1099, 0.3997,  ..., 0.0465, 0.0320, 0.0235],
+        ...,
+        [0.1292, 0.1395, 0.3747,  ..., 0.0590, 0.0550, 0.0530],
+        [0.2026, 0.2048, 0.3181,  ..., 0.0600, 0.0830, 0.0730],
+        [0.2000, 0.1956, 0.2489,  ..., 0.0410, 0.0390, 0.0295]],
+       dtype=torch.float64)
+</code></pre>
+<h2 id="3添加节点特征-基因表达特征">3.添加节点特征--基因表达特征</h2>
+<pre><code class="language-python">expr = pd.read_csv(&quot;cpm_clean_expr_calMean.csv&quot;, index_col=0).iloc[:,-6:]
+
+exprFeat = []
+for gene, id in gdict.items():
+    exprFeat.append(list(expr.loc[gene,:]))
+exprF = torch.tensor(exprFeat).to(torch.float64)
+
+graph.ndata[&quot;exprF&quot;] = exprF
+graph.ndata[&quot;exprF&quot;]
+</code></pre>
+<pre><code>tensor([[1.6853e+00, 2.5214e+00, 4.4554e-02, 3.9779e+00, 1.5837e+00, 1.2066e+00],
+        [1.7418e+02, 1.7291e+02, 4.1884e+01, 1.4665e+02, 1.2644e+02, 5.5593e+01],
+        [3.2703e+01, 5.2835e+01, 1.8378e+02, 3.8498e+01, 2.8865e+01, 1.6740e+01],
+        ...,
+        [2.7613e+01, 8.7953e+01, 1.2520e+02, 6.6672e+01, 7.1486e+01, 2.3273e+01],
+        [9.5840e+00, 2.0126e+01, 3.7542e+00, 1.9665e+01, 1.9616e+01, 7.9439e+00],
+        [5.8930e+00, 4.1931e+00, 5.1596e+00, 3.7221e+00, 4.2511e+00, 8.7424e+00]],
+       dtype=torch.float64)
+</code></pre>
+<h2 id="增加边特征-全为1">增加边特征--全为1</h2>
+<pre><code class="language-python">y = torch.ones((graph.num_edges(), 1))
+graph.edata[&quot;y&quot;] = y
+</code></pre>
+<h2 id="保存图到文件">保存图到文件</h2>
+<pre><code class="language-python">dgl.save_graphs(&quot;GRN_2.bin&quot;, graph)
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://shengtudai2.github.io/tag/IXkhOzjF3/" class="tag">
+                    DGL
+                  </a>
+                
+                  <a href="https://shengtudai2.github.io/tag/TdSY7qLDag/" class="tag">
+                    GRN
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://shengtudai2.github.io/post/jupyter-Install/">
+                  <h3 class="post-title">
+                    Jupyte安装不完全指北
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
