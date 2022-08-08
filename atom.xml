@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Shengtudai&#39;s blog</title>
+  
+  <subtitle>Welcom to My Blog</subtitle>
+  <link href="https://shengtudai2.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://shengtudai2.github.io/"/>
+  <updated>2022-08-08T06:44:04.363Z</updated>
+  <id>https://shengtudai2.github.io/</id>
+  
+  <author>
+    <name>Shengtudai</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jupyterInsatll</title>
+    <link href="https://shengtudai2.github.io/2022/08/08/jupyterInsatll/"/>
+    <id>https://shengtudai2.github.io/2022/08/08/jupyterInsatll/</id>
+    <published>2022-08-08T06:37:30.000Z</published>
+    <updated>2022-08-08T06:44:04.363Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;1-创建虚拟环境，安装jupyter&quot;&gt;&lt;a href=&quot;#1-创建虚拟环境，安装jupyter&quot; class=&quot;headerlink&quot; title=&quot;1.创建虚拟环境，安装jupyter&quot;&gt;&lt;/a&gt;1.创建虚拟环境，安装jupyter&lt;/h3&gt;&lt;pre</summary>
+        
+      
+    
+    
+    
+    <category term="软件安装" scheme="https://shengtudai2.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
+    
+    
+    <category term="安装指北" scheme="https://shengtudai2.github.io/tags/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8C%97/"/>
+    
+    <category term="jupyter" scheme="https://shengtudai2.github.io/tags/jupyter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://shengtudai2.github.io/2022/08/07/hello-world/"/>
+    <id>https://shengtudai2.github.io/2022/08/07/hello-world/</id>
+    <published>2022-08-07T02:34:51.219Z</published>
+    <updated>2022-08-07T02:34:51.219Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>

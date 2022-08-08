@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>jupyterInsatll</title>
+      <link href="/2022/08/08/jupyterInsatll/"/>
+      <url>/2022/08/08/jupyterInsatll/</url>
+      
+        <content type="html"><![CDATA[<h3 id="1-创建虚拟环境，安装jupyter"><a href="#1-创建虚拟环境，安装jupyter" class="headerlink" title="1.创建虚拟环境，安装jupyter"></a>1.创建虚拟环境，安装jupyter</h3><pre class=" language-bash"><code class="language-bash">conda create -n graph python<span class="token operator">=</span>3.8  <span class="token comment" spellcheck="true"># 创建虚拟环境</span>conda activate graphpython -m pip <span class="token function">install</span> --upgrade pipconda <span class="token function">install</span> ipython  <span class="token comment" spellcheck="true"># 安装ipython</span>conda <span class="token function">install</span> jupyter  <span class="token comment" spellcheck="true"># 安装jupyter</span>jupyter notebook --generate-config  <span class="token comment" spellcheck="true"># 生成配置文件</span></code></pre><h3 id="2-输入ipython配置密码"><a href="#2-输入ipython配置密码" class="headerlink" title="2.输入ipython配置密码"></a>2.输入<code>ipython</code>配置密码</h3><pre class=" language-python"><code class="language-python"><span class="token keyword">from</span> notebook<span class="token punctuation">.</span>auth <span class="token keyword">import</span> passwdpasswd<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true"># 输入两次密码</span><span class="token comment" spellcheck="true"># 输出内容保存好</span><span class="token comment" spellcheck="true"># Out[2]: 'argon2:$argon2id$v=19$m=10240,t=10,p=8$EHhduPvNwGdI0dHo5dgQDg$0rEs3/blaFD5xv/bb+NhU1'</span>exit</code></pre><h3 id="3-修改配置文件"><a href="#3-修改配置文件" class="headerlink" title="3.修改配置文件"></a>3.修改配置文件</h3><pre class=" language-bash"><code class="language-bash">vim /home/hgdai/.jupyter/jupyter_notebook_config.py</code></pre><p>编辑以下内容：</p><pre class=" language-shell"><code class="language-shell">c.NotebookApp.ip='*' #设置访问notebook的ip，*表示所有IP，这里设置ip为都可访问c.NotebookApp.password=u'argon2:$argon2id$v=19$m=10240,t=10,p=8$EHhduPvNwGdI0dHo5dgQDg$0rEs3/blaFD5xv/bb+NhU1'#填写刚刚生成的密文c.NotebookApp.open_browser = False # 禁止notebook启动时自动打开浏览器c.NotebookApp.port =8888 #指定访问的端口，默认是8888</code></pre><p>启动jupyter</p><pre><code>nohup jupyter notebook --allow-root &gt; jupyter.log 2&gt;&amp;1 &amp;</code></pre><h3 id="4-增加-x2F-删除jupyter内核"><a href="#4-增加-x2F-删除jupyter内核" class="headerlink" title="4.增加&#x2F;删除jupyter内核"></a>4.增加&#x2F;删除jupyter内核</h3><pre class=" language-shell"><code class="language-shell"># 以下步骤在需要添加的python环境下操作pip install ipykernelpython -m ipykernel install --user --name='graph-python38' --display-name='graph-python38'# --name 设置环境名，随便起名，在 jupyter kernelspec list 命令查看所有环境时显示该名# --display-name 设置内核展示的名字，在jupyter网页上选择内核时显示的名字# jupyter kernelspec remove [name] 删除某个内核\```</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 软件安装 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 安装指北 </tag>
+            
+            <tag> jupyter </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2022/08/07/hello-world/"/>
+      <url>/2022/08/07/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
